@@ -13,8 +13,10 @@ spark = glueContext.spark_session
 job = Job(glueContext)
 job.init(args['JOB_NAME'], args)
 
+
 # 1. Variáveis de Configuração
 
+# Caminho de origem (onde estão os CSVs)
 source_path = "s3://tech-challenge-018298043465/bases_origem_pesquisas/2023/"
 
 # Caminho de destino (onde os dados serão salvos em Parquet)
@@ -25,6 +27,7 @@ db_name = "tech_challenge_db"
 
 # Nome da tabela que será criada no Athena
 table_name = "pesquisas_2023"
+
 
 # 2. Leitura dos dados CSV
 
@@ -43,7 +46,7 @@ sink = glueContext.getSink(
     path=target_path,
     connection_type="s3",
     updateBehavior="UPDATE_IN_DATABASE",
-    partitionKeys=[],
+    partitionKeys=[], 
     enableUpdateCatalog=True,
     transformation_ctx="sink"
 )
@@ -53,4 +56,4 @@ sink.setCatalogInfo(catalogDatabase=db_name, catalogTableName=table_name)
 sink.setFormat("glueparquet")
 sink.writeFrame(dynamic_frame_read)
 
-job.commit()
+job.commit())
