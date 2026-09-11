@@ -16,13 +16,13 @@ job.init(args['JOB_NAME'], args)
 
 # 1. Variáveis de Configuração
 
-# Seu caminho de origem (onde estão os CSVs)
+# Caminho de origem (onde estão os CSVs)
 source_path = "s3://tech-challenge-018298043465/bases_origem_pesquisas/2024/"
 
 # Caminho de destino (onde os dados serão salvos em Parquet)
 target_path = "s3://tech-challenge-018298043465/bases_finais_pesquisa/2024/"
 
-# Nome do banco de dados no Athena (substitua se tiver criado um específico)
+# Nome do banco de dados no Athena
 db_name = "tech_challenge_db" 
 
 # Nome da tabela que será criada no Athena
@@ -32,7 +32,7 @@ table_name = "pesquisas_2024"
 # 2. Leitura dos dados CSV
 
 dynamic_frame_read = glueContext.create_dynamic_frame.from_options(
-    format_options={"quoteChar": '"', "withHeader": True, "separator": ","}, # Mude o separador se seu CSV usar ";"
+    format_options={"quoteChar": '"', "withHeader": True, "separator": ","},
     connection_type="s3",
     format="csv",
     connection_options={"paths": [source_path], "recurse": True},
@@ -45,7 +45,7 @@ sink = glueContext.getSink(
     path=target_path,
     connection_type="s3",
     updateBehavior="UPDATE_IN_DATABASE",
-    partitionKeys=[], # Se quiser particionar por algum campo, adicione o nome da coluna aqui, ex: ["mes"]
+    partitionKeys=[],
     enableUpdateCatalog=True,
     transformation_ctx="sink"
 )
