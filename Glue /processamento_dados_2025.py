@@ -28,7 +28,7 @@ table_name = "pesquisas_2025"
 
 # 2. Leitura dos dados CSV
 dynamic_frame_read = glueContext.create_dynamic_frame.from_options(
-    format_options={"quoteChar": '"', "withHeader": True, "separator": ","}, # Mude o separador se seu CSV usar ";"
+    format_options={"quoteChar": '"', "withHeader": True, "separator": ","},
     connection_type="s3",
     format="csv",
     connection_options={"paths": [source_path], "recurse": True},
@@ -40,7 +40,7 @@ sink = glueContext.getSink(
     path=target_path,
     connection_type="s3",
     updateBehavior="UPDATE_IN_DATABASE",
-    partitionKeys=[], # Se quiser particionar por algum campo, adicione o nome da coluna aqui, ex: ["mes"]
+    partitionKeys=[],
     enableUpdateCatalog=True,
     transformation_ctx="sink"
 )
